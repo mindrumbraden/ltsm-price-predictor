@@ -166,13 +166,8 @@ plt.show()
 #%%
 
 """
-Great. It looks like there is predictive ability here. But there appears
-to be an indexing error. Also, the code is a mess. I need to understand
-the LTSM class beginning on line 43. Also line 112-119, the Variable(torch...)
-crap I do not understand why it is strictly necesssary. In general, probably, 
-the LTSM class and from 112 down I should understand better. 
+Need to transfer these items to main.py
 """
-
 
 
 
