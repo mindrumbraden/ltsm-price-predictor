@@ -1,160 +1,30 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 30 16:03:35 2025
-
-@author: bradenmindrum
-"""
-
-#%%
-
-# Modules used, but not used within the main.py scope
-# import pandas as pd
-import matplotlib.pyplot as plt
-from torch.optim import Adam
-from torch.nn import MSELoss
-import numpy as np
-
-
-from etl import export_transform_load, obtain_x_y, train_val_test_split
-from lstm_model import LSTM
-
-#%%
-
-    
-#%%
+import argparse
+from train import train_model
 
 def main():
-    df = export_transform_load("bitcoin.csv")
-    
-    # 0 corresponds to date. 8 corresponds to closing price
-    plt.plot(df.iloc[:,0], df.iloc[:,8])
-    plt.title("Bitcoin Closing Price Over Time")
-    plt.show()
+    parser = argparse.ArgumentParser(description="Train an LSTM model on any CSV file.")
+    parser.add_argument("--csv", type=str, required=True, help="Path to CSV file")
+    parser.add_argument("--column", type=str, required=True, help="Target column to predict")
+    parser.add_argument("--window", type=int, default=10, help="Sequence length for LSTM")
+    parser.add_argument("--val_size", type=int, default=30, help="Validation set size")
+    parser.add_argument("--test_size", type=int, default=30, help="Test set size")
+    parser.add_argument("--epochs", type=int, default=2000, help="Training epochs")
+    parser.add_argument("--lr", type=float, default=0.01, help="Learning rate")
+    parser.add_argument("--hidden", type=int, default=2, help="Hidden layer size")
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-"""    
-    # Create usable data
-    x, y, transform = obtain_x_y(df)
-    (train_x, train_y), (val_x, val_y), (test_x, test_y) = train_val_test_split(x, y)
-    
-    # Initialize model
-    lstm = LSTM()
-    
-    # Set parameters, optimizer, and criterion
-    num_epochs = 500
-    learning_rate = 0.01
-    optimizer = Adam(lstm.parameters(), lr=learning_rate)
-    criterion = MSELoss()  
-    
-    # Train model
-    for epoch in range(num_epochs):
-        outputs = lstm(train_x)
-        optimizer.zero_grad()
-        loss = criterion(outputs, train_y)
-        loss.backward()
-        optimizer.step()
-        if epoch % 100 == 0:
-            print(f"Epoch: {epoch}, Loss: {loss.item()}")
-    
-    lstm.eval()
-    val_predict = lstm(val_x)
+    args = parser.parse_args()
 
-    data_predict = val_predict.data.numpy()
-    data_predict = transform.inverse_transform(data_predict)
-
-    data_actual = val_y.data.numpy()
-    data_actual = transform.inverse_transform(data_actual)
-
-    shifted_data = np.insert(data_actual[:-1], 0, np.nan)
-
-    plt.plot(shifted_data)
-    plt.plot(data_predict)
-    plt.show()
-    
-    return 0
-"""
-
-#%% 
+    model = train_model(
+        csv_path=args.csv,
+        target_column=args.column,
+        window=args.window,
+        val_size=args.val_size,
+        test_size=args.test_size,
+        num_epochs=args.epochs,
+        learning_rate=args.lr,
+        hidden_size=args.hidden
+    )
+    print("✅ Training complete and model ready.")
 
 if __name__ == "__main__":
     main()
-    
-#%% 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
