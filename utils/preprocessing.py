@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 18 11:53:33 2025
-
-@author: bradenmindrum
-"""
-
 import numpy as np
 
 def sliding_windows(data, seq_length):
